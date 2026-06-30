@@ -374,7 +374,7 @@ Arguments of the lemma are indexed with numbers starting with 0 for the first ar
 
 Some of these strategies require that a pattern can only be used when it covers all the arguments of the theorem, i.e. if all the arguments are fixed by the pattern. A multi-pattern can then only be used if every argument is covered by at least one of the included patterns. This is so that a theorem isn't applied to eagerly.
 
-### `=`
+* `=`
 
 This instructs `grind` to use the left side of the goal (if it is an equality) as a pattern. It fails if not all arguments are covered in this way.
 Here is an example from Mathlib:
@@ -394,7 +394,7 @@ even_iff: [@Even `[ℤ] `[Int.instAdd] #0]
 
 An equivalence is treated as an equality of proposition, so we can also use modifier here. This theorem is used whenever there is a statement `Even n` on the whiteboard.
 
-### `=_`
+* `=_`
 
 This instructs `grind` to use the right side of the goal (if it is an equality) as a pattern. It fails if not all arguments are covered in this way.
 
@@ -413,7 +413,7 @@ with the `grind?` output
 toList_toArray: [@Vector.toList #2 #1 #0]
 ```
 
-### `_=_`
+*  `_=_`
 
 This modifier adds two patterns corresponding to `=` and `=_`. Thus the theorem can be used if the left or the right side matches something on the whiteboard.
 
@@ -438,7 +438,7 @@ trans_symm: [@Iso.trans #6 #5 #2 #3 #4 (@Iso.symm _ _ #3 #2 #0) (@Iso.symm _ _ #
 
 Here we can see that the modifier produced two patterns. So if either sides of the equality are present somewhere on the whiteboard, `grind` will use this theorem to add the other one to the same equivalence class.
 
-### `→`
+* `→`
 
 With this pattern, `grind` will start with the hypotheses starting with the first.
 It will add these hypotheses to a multi-pattern if they cover a previously not covered argument.
@@ -461,7 +461,7 @@ eq_of_mem: [@Set.EqOn #7 #6 #4 #3 #5, @Membership.mem _ _ _ #5 #2]
 
 This time, the modifier produced a multi-pattern. You can see that this differs from the example above: multi-patterns are presented as lists with more than one entry, while multiple patterns are presented as different lists. So this theorem will only be used if `grind` finds both an expression `s.EqOn f₁ f₂` and `a ∈ s` on the whiteboard.
 
-### `.`
+* `.`
 
 This is the default strategy. Here `grind` picks expressions for a multi-pattern by first considering the conclusion and then the hypotheses starting with the first one.
 (We introduce this last because I could find no easy examples in Mathlib.)
@@ -482,7 +482,7 @@ with the `grind?` output
 _root_.isClosed_dsupport: [@IsClosed #8 #3 (@dsupport _ #7 #6 #5 #4 _ #2 #1 #0)]
 ```
 
-### Further modifiers
+* Further modifiers
 
 There a more modifiers that tell `grind` the order in which it should pick patterns such as `←`, `⇒` and `⇐`. Additionally, there are some modifiers to be used for specific types of theorems such as `ext` for extensionality theorems and `inj` for theorems showing injectivity.
 
