@@ -6,6 +6,11 @@ name = "verso"
 git = "https://github.com/leanprover/verso"
 rev = "v4.31.0"
 
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.31.0"
+
 [[lean_lib]]
 name = "TextbookTemplate"
 
