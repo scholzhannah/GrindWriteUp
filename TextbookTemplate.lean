@@ -86,11 +86,17 @@ You can also label your own inductive definitions with the `grind cases` attribu
 
 Write more about how to use the grind interactive mode.
 
+Use the example from the beginning to illustrate why we might need interactive mode.
+
+Show some of the commands you can do there. -> See Examples from talk by Kim Morrison
+
 # Random further things
 
 ## Style and Conventions
 
 ## Difference to other tactics
+
+Aesop? `bv_decide`?
 
 ## Defining new tactics using `grind`
 

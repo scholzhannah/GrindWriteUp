@@ -332,9 +332,9 @@ set_option trace.grind.ematch.instance true in
 #grind_lint inspect List.reverse_flatMap
 ```
 
-with the following output:
+with the following (shortened) output:
 
-```leanOutput Lint2
+```
 [grind.ematch.instance] reverse_flatMap: (flatMap f l).reverse = flatMap (reverse ∘ f) l.reverse
 [grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ f) l.reverse = (flatMap (reverse ∘ reverse ∘ f) l).reverse
 [grind.ematch.instance] flatMap_def: flatMap (reverse ∘ f) l.reverse = (List.map (reverse ∘ f) l.reverse).flatten
@@ -345,60 +345,40 @@ with the following output:
       (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
 [grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
       (List.map (reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
-[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse =
-      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
-[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
-      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
-[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse =
-      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
-[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
-      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
-[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-          l).reverse =
-      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
-[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-        l.reverse =
-      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-          l).reverse
-[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-        l.reverse =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-          l.reverse).flatten
-[grind.ematch.instance] reverse_flatMap: (flatMap
-          (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-          l).reverse =
-      flatMap
-        (reverse ∘
-          reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-        l.reverse
-[grind.ematch.instance] flatMap_def: flatMap
-        (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
-      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
-          l).flatten
 ```
 
 where we can actually observe the loop.
 
-If we want to see all theorems that are problematic in this way, we can do:
+If we want to see all theorems that are problematic in this way, we can do this with `#grind_lint check`. We can be more specific and only search in a specific module and require a specific number of additionally instantiated theorems.
+(I am not including the following code as Lean code, to not make the build slow.)
 
-```lean
-#grind_lint check
+```
+#grind_lint check (min := 20) in module Mathlib
 ```
 
+for my current imports this gives
 
+```
+instantiating `Set.Icc.convexComb_symm` triggers 24 additional `grind` theorem instantiations
+```
+```
+instantiating `Path.symm_apply` triggers 24 additional `grind` theorem instantiations
+```
 
-Talk about how to identify bad tagging.
+Mathlib performs this exact test above, the two lemmas we found above are currently the only exceptions.
 
-# Further Examples
+As you can see the lemmas `reverse_flatMap` and `flatMap_reverse` don't appear here, meaning they don't produce the loop we discovered above in Mathlib. They are still tagged but have additional conditions imposed to prevent the looping:
 
-Show examples where it is non-trivial what pattern to pick
+```lean
+grind_pattern reverse_flatMap => (l.flatMap f).reverse where
+  f =/= List.reverse ∘ _
+
+grind_pattern flatMap_reverse => l.reverse.flatMap f where
+  f =/= List.reverse ∘ _
+```
+
+# Restricting e-matching in a `grind` call
+
+If instead of modifying how lemmas are tagged, you want to limit e-matching in your `grind` call, you can for example do this by restricting "generations". Each expression on the whiteboard has a associated generation. The expressions from the original context all have generation 0. When we produce a new expression through e-matching, its generation will be one higher than that of the term with the highest generation that was used for producing the new expression.
+
+You can write `grind (gen := n)` to modify how low the generation number needs to be for e-matching to consider a term. The default is 8.
