@@ -7,6 +7,7 @@ import TextbookTemplate.Nat
 import TextbookTemplate.Basic
 import TextbookTemplate.Error
 import TextbookTemplate.EMatching
+import TextbookTemplate.Satellite
 
 -- This gets access to most of the manual genre (which is also useful for textbooks)
 open Verso.Genre Manual
@@ -80,7 +81,7 @@ You can also label your own inductive definitions with the `grind cases` attribu
 
 {include 1 TextbookTemplate.EMatching}
 
-# Satellite Solvers
+{include 1 TextbookTemplate.Satellite}
 
 # Grind Interactive Mode
 
