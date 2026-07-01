@@ -78,7 +78,7 @@ If this is the case, you can use `grind -splitIfs` and `grind -splitMatch` to di
 
 You can also label your own inductive definitions with the `grind cases` attribute to enable case splitting on them. Lean itself does this for example for {lean}`Or` and {lean}`Sum`. Mathlib basically doesn't use this feature, yet. I think this is mainly because people tag lemmas instead to achieve similar effects when needed.
 
-{include TextbookTemplate.EMatching}
+{include 1 TextbookTemplate.EMatching}
 
 # Satellite Solvers
 

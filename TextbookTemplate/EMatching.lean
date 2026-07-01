@@ -304,17 +304,98 @@ If your `grind` call is slow you might want to check whether it might be due to 
 
 Sometimes a combination of tagged theorems can produce loops. These loops can be identified with `#grind_lint`.
 
-Here is an example from the Language Reference. If we tag {lean}`List.reverse_flatMap` like this:
+Here is an example from the Language Reference. If we tag {lean}`List.reverse_flatMap` and {lean}`List.flatMap_reverse` like this:
 
 ```lean
-attribute [grind =] List.reverse_flatMap
+attribute [grind =] List.reverse_flatMap List.flatMap_reverse
 ```
 
-Then `#grind_lint inspect` will show us that this theorem now produces a loop with other tagged theorems:
+Then `#grind_lint inspect` will show us that these theorems now produce a loop:
 
-```lean
+```lean (name := Lint)
 #grind_lint inspect List.reverse_flatMap
 ```
+
+```leanOutput Lint
+instantiating `List.reverse_flatMap` triggers 22 additional `grind` theorem instantiations
+```
+```leanOutput Lint
+Try this to display the actual theorem instances:
+  [apply] set_option trace.grind.ematch.instance true in
+  #grind_lint inspect List.reverse_flatMap
+```
+
+If we do what the the suggestion tells us to do we get:
+
+```lean (name := Lint2)
+set_option trace.grind.ematch.instance true in
+#grind_lint inspect List.reverse_flatMap
+```
+
+with the following output:
+
+```leanOutput Lint2
+[grind.ematch.instance] reverse_flatMap: (flatMap f l).reverse = flatMap (reverse ∘ f) l.reverse
+[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ f) l.reverse = (flatMap (reverse ∘ reverse ∘ f) l).reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ f) l.reverse = (List.map (reverse ∘ f) l.reverse).flatten
+[grind.ematch.instance] flatMap_def: flatMap f l = (List.map f l).flatten
+[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ f) l).reverse = flatMap (reverse ∘ reverse ∘ reverse ∘ f) l.reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ f) l = (List.map (reverse ∘ reverse ∘ f) l).flatten
+[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
+[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse =
+      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
+[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
+[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse =
+      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
+[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse).flatten
+[grind.ematch.instance] reverse_flatMap: (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+          l).reverse =
+      flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l.reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l).flatten
+[grind.ematch.instance] flatMap_reverse: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+        l.reverse =
+      (flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+          l).reverse
+[grind.ematch.instance] flatMap_def: flatMap (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+        l.reverse =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+          l.reverse).flatten
+[grind.ematch.instance] reverse_flatMap: (flatMap
+          (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+          l).reverse =
+      flatMap
+        (reverse ∘
+          reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+        l.reverse
+[grind.ematch.instance] flatMap_def: flatMap
+        (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f) l =
+      (List.map (reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ reverse ∘ f)
+          l).flatten
+```
+
+where we can actually observe the loop.
+
+If we want to see all theorems that are problematic in this way, we can do:
+
+```lean
+#grind_lint check
+```
+
+
 
 Talk about how to identify bad tagging.
 
