@@ -337,19 +337,19 @@ You can also label your own inductive definitions with the `grind cases` attribu
 
 # E-matching
 
-As said before, e-matching is how `grind` uses the lemmas tagged by users.
+As said before, e-matching is how `grind` uses the lemmas tagged by users. In it's most basic form, you can tag a lemma with `@[grind *]` where `*` is a modifier, of which we discuss examples below.
 This of course provides a lot of interactivity, so we will discuss this in detail.
 
-The basic functionality of e-matching is the following: `grind` maintains an index of tagged lemmas an corresponding patterns. If a pattern matches the terms in the context, `grind` tries to apply the theorem to the relevant terms and write the result on the whiteboard.
+The basic functionality of e-matching is the following: `grind` maintains an index of tagged lemmas and corresponding patterns. If a pattern matches the terms in the context, `grind` tries to apply the theorem to the relevant terms and write the result on the whiteboard.
 
-E-matching can be very powerful if whole libraries are tagged thoroughly but it can of course also be very slow, especially if patterns are chosen to be to general.
+E-matching can be very powerful if whole libraries are tagged thoroughly but it can of course also be very slow, especially if patterns are chosen to be too general.
 This is why `grind` provides a lot of customisability and diagnostic tools here.
 
 ## General
 
-An expression is indexable if it starts with a constant that is anything but {lean}`Eq`, {lean}`HEq`, {lean}`Iff`, {lean}`And`, {lean}`Or`, and {lean}`Not`. For example an expression of the form `t = s` where `t` and `s` are some subexpressions cannot be used as a pattern.
+An expression is indexable if it starts with a constant that is anything but {lean}`Eq`, {lean}`HEq`, {lean}`Iff`, {lean}`And`, {lean}`Or` and {lean}`Not`. For example, an expression of the form `t = s` where `t` and `s` are some subexpressions cannot be used as a pattern.
 
-In addition to simply looking whether a single pattern can be found in the context, theorem can also have multi-patterns. Here multiple patterns need to be found in the context before the theorem is applied.
+In addition to simply looking whether a single pattern can be found in the context, theorems can also have multi-patterns. Here multiple patterns need to be found in the context before the theorem is applied.
 
 Here is an example from Mathlib where a multi-pattern is used:
 
@@ -359,7 +359,10 @@ theorem card_ne_zero_of_mem {α : Type*} {s : Finset α}
   (not_congr card_eq_zero).2 <| ne_empty_of_mem h
 ```
 
-Here we cannot just use `#s ≠ 0` as a pattern because it doesn't cover `a`. We also probably don't want to try to apply this theorem whenever a statement of the form `a ∈ s` is on the whiteboard So Mathlib specifies the multi-pattern `a ∈ s, #s` here. So the fact that `#s ≠ 0` will be added to the context, whenever there is a statement of the form `a ∈ s` on the whiteboard and somewhere on the whiteboard the cardinality of `s` is mentioned.
+Let us consider the different patterns we could use here. We cannot use `#s ≠ 0` or `#s = 0` because both of these start with a non-indexable constant.
+We could use `#s` as a pattern. However, this doesn't mention `a`, so the theorem would be tried whenever we talk about the cardinality of a finite set even when there is no element in the context. We also probably don't want to try to apply this theorem whenever a statement of the form `a ∈ s` is on the whiteboard because in this case we don't know if we need to consider cardinalities at all.
+
+So Mathlib specifies the multi-pattern `a ∈ s, #s` here. So the fact that `#s ≠ 0` will be added to the context, whenever there is a statement of the form `a ∈ s` on the whiteboard and somewhere on the whiteboard the cardinality of `s` is mentioned.
 
 It is important to note that a multi-pattern is not the same as specifying multiple patterns.
 In a multi-pattern all included patterns need to match.
@@ -372,9 +375,9 @@ Here is an overview of the options with examples from Mathlib.
 You can use `grind?` to see which pattern is picked.
 Arguments of the lemma are indexed with numbers starting with 0 for the first argument.
 
-Some of these strategies require that a pattern can only be used when it covers all the arguments of the theorem, i.e. if all the arguments are fixed by the pattern. A multi-pattern can then only be used if every argument is covered by at least one of the included patterns. This is so that a theorem isn't applied to eagerly.
+Some of these strategies require that a pattern can only be used when it covers all the arguments of the theorem, i.e. if all the arguments are fixed by the pattern. A multi-pattern can then only be used if every argument is covered by at least one of the included patterns. This is so that a theorem isn't applied too eagerly.
 
-* `=`
+### `=`: left side of equality
 
 This instructs `grind` to use the left side of the goal (if it is an equality) as a pattern. It fails if not all arguments are covered in this way.
 Here is an example from Mathlib:
@@ -392,13 +395,13 @@ even_iff: [@Even `[ℤ] `[Int.instAdd] #0]
 
 `#0` refers to the first argument, so `n`.
 
-An equivalence is treated as an equality of proposition, so we can also use modifier here. This theorem is used whenever there is a statement `Even n` on the whiteboard.
+An equivalence is treated as an equality of proposition, so we can also use this modifier here. The pattern means that this theorem is used whenever there is a statement `Even n` on the whiteboard.
 
-* `=_`
+### `=_`: right side of equality
 
 This instructs `grind` to use the right side of the goal (if it is an equality) as a pattern. It fails if not all arguments are covered in this way.
 
-I could find an example in Mathlib so here is an example from Lean:
+I could not find an example in Mathlib so here is an example from Lean:
 
 ```lean (name := question2)
 @[grind? =_]
@@ -413,7 +416,7 @@ with the `grind?` output
 toList_toArray: [@Vector.toList #2 #1 #0]
 ```
 
-*  `_=_`
+###  `_=_`: both sides of equality as two patterns
 
 This modifier adds two patterns corresponding to `=` and `=_`. Thus the theorem can be used if the left or the right side matches something on the whiteboard.
 
@@ -438,7 +441,7 @@ trans_symm: [@Iso.trans #6 #5 #2 #3 #4 (@Iso.symm _ _ #3 #2 #0) (@Iso.symm _ _ #
 
 Here we can see that the modifier produced two patterns. So if either sides of the equality are present somewhere on the whiteboard, `grind` will use this theorem to add the other one to the same equivalence class.
 
-* `→`
+### `→`: starting with hypotheses
 
 With this pattern, `grind` will start with the hypotheses starting with the first.
 It will add these hypotheses to a multi-pattern if they cover a previously not covered argument.
@@ -461,7 +464,7 @@ eq_of_mem: [@Set.EqOn #7 #6 #4 #3 #5, @Membership.mem _ _ _ #5 #2]
 
 This time, the modifier produced a multi-pattern. You can see that this differs from the example above: multi-patterns are presented as lists with more than one entry, while multiple patterns are presented as different lists. So this theorem will only be used if `grind` finds both an expression `s.EqOn f₁ f₂` and `a ∈ s` on the whiteboard.
 
-* `.`
+### `.`: starting with conclusion
 
 This is the default strategy. Here `grind` picks expressions for a multi-pattern by first considering the conclusion and then the hypotheses starting with the first one.
 (We introduce this last because I could find no easy examples in Mathlib.)
@@ -482,7 +485,7 @@ with the `grind?` output
 _root_.isClosed_dsupport: [@IsClosed #8 #3 (@dsupport _ #7 #6 #5 #4 _ #2 #1 #0)]
 ```
 
-* Further modifiers
+### Further modifiers
 
 There a more modifiers that tell `grind` the order in which it should pick patterns such as `←`, `⇒` and `⇐`. Additionally, there are some modifiers to be used for specific types of theorems such as `ext` for extensionality theorems and `inj` for theorems showing injectivity.
 
@@ -491,7 +494,7 @@ Learn more about these modifiers in the [Lean Language Reference](https://lean-l
 ### `grind!`
 
 Sometimes you want to pick a subterm or subexpression as a pattern. If you want to be as "aggressive" as possible with this, you can pick minimal indexable subexpression.
-An expression is minimal indexable if it has no indexable subexpressions (respecting additionally some priorities).
+An expression is minimally indexable if it has no indexable subexpressions (respecting additionally some priorities).
 You can use the `grind!` attribute in the same way as `grind` with the modifiers described above.
 
 Here is an example from the Language Reference that shows why you might prefer `grind!` in some situations. Consider the following setup:
@@ -560,7 +563,7 @@ grind_pattern mul_left_iff => IsUnit a, IsUnit (a * b)
 
 You can see that this is specifying a multi-pattern. This theorem is only used by `grind` if it finds terms of the shape `IsUnit a` and `IsUnit (a * b)` on the whiteboard.
 
-If you want to specify multiple patterns you can do:
+If you want to specify multiple patterns you can do that like this:
 
 ```lean -show
 open List
@@ -568,7 +571,8 @@ open List
 
 ```lean
 @[simp]
-theorem count_false_add_count_true' (l : List Bool) : count false l + count true l = length l :=
+theorem count_false_add_count_true' (l : List Bool) :
+    count false l + count true l = length l :=
   count_not_add_count l true
 
 grind_pattern count_false_add_count_true' => count false l
@@ -584,7 +588,7 @@ So how do you pick a pattern for your theorem?
 
 Firstly, if you just tag it with `@[grind]` without any modifiers, there will be a helpful message suggesting different modifiers and the patterns they would generate.
 
-So for example in the example above we get:
+If in our example from above we write
 
 ```lean (name := try3)
 @[grind]
