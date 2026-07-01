@@ -27,7 +27,7 @@ open Finset
 
 set_option pp.rawOnError true
 
-#doc (Manual) "Basic Usage of `grind`" =>
+#doc (Manual) "Basic usage of `grind`" =>
 
 
 The `grind` tactic is meant to automatically provide proofs for easy goals.
