@@ -8,6 +8,7 @@ import TextbookTemplate.Basic
 import TextbookTemplate.Error
 import TextbookTemplate.EMatching
 import TextbookTemplate.Satellite
+import TextbookTemplate.Interactive
 
 -- This gets access to most of the manual genre (which is also useful for textbooks)
 open Verso.Genre Manual
@@ -28,7 +29,7 @@ authors := ["Hannah Scholz"]
 %%%
 
 {index}[overview]
-This is the writeup for the talk about the `grind` tactic for the Graduate Seminar "Advanced Topics in Formalised Mathematics" taught by Michael Rothgang in Bonn in the summer term 2026. This document is mostly based on the [Lean Language Reference](https://lean-lang.org/doc/reference/latest/The--grind--tactic/), so look there for further reading.
+This is the write-up for the talk about the `grind` tactic for the Graduate Seminar "Advanced Topics in Formalised Mathematics" taught by Michael Rothgang in Bonn in the summer term 2026. This document is mostly based on the [Lean Language Reference](https://lean-lang.org/doc/reference/latest/The--grind--tactic/), so look there for further reading.
 
 {include 1 TextbookTemplate.Basic}
 
@@ -83,17 +84,18 @@ You can also label your own inductive definitions with the `grind cases` attribu
 
 {include 1 TextbookTemplate.Satellite}
 
-# Grind Interactive Mode
+{include 1 TextbookTemplate.Interactive}
 
-Write more about how to use the grind interactive mode.
-
-Use the example from the beginning to illustrate why we might need interactive mode.
-
-Show some of the commands you can do there. -> See Examples from talk by Kim Morrison
 
 # Random further things
 
+## Local
+
+talk about `grind + locals` and `@[local grind]` see talk by Kim Morrison
+
 ## Style and Conventions
+
+see notes by Chris Henson
 
 ## Difference to other tactics
 

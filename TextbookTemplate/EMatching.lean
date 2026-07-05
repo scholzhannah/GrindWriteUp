@@ -11,6 +11,8 @@ import Mathlib.Analysis.Distribution.Support
 -- for a list example
 import Mathlib.Data.Bool.Count
 
+import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
+
 -- This gets access to most of the manual genre (which is also useful for textbooks)
 open Verso.Genre Manual
 
@@ -22,6 +24,9 @@ open TextbookTemplate
 
 -- for cardinality symbol
 open Finset CategoryTheory Distribution
+
+-- for display below
+set_option verso.docstring.allowMissing true
 
 set_option pp.rawOnError true
 
@@ -307,7 +312,8 @@ Sometimes a combination of tagged theorems can produce loops. These loops can be
 Here is an example from the Language Reference. If we tag {lean}`List.reverse_flatMap` and {lean}`List.flatMap_reverse` like this:
 
 ```lean
-attribute [grind =] List.reverse_flatMap List.flatMap_reverse
+attribute [grind =] List.reverse_flatMap
+  List.flatMap_reverse
 ```
 
 Then `#grind_lint inspect` will show us that these theorems now produce a loop:
@@ -376,6 +382,52 @@ grind_pattern reverse_flatMap => (l.flatMap f).reverse where
 grind_pattern flatMap_reverse => l.reverse.flatMap f where
   f =/= List.reverse ∘ _
 ```
+
+## Recommended patterns
+
+Per the language reference, any lemma that is tagged with `simp` should usually also be tagged with `grind =`.
+The only exception to this is, if this lemma introduced a case distinction on the right side. Then you should instead write and tag lemmas for the specific cases.
+
+# Figuring out lemmas that should be tagged
+
+When a `grind` call that you expect should work actually fails this could be due to missing tagged lemmas.
+In this case you can either identify yourself which lemmas the proof should use and which ones of those are (insufficiently) tagged.
+Alternatively, you can use `grind +suggestions` which also considers lemmas for e-matching that have not been tagged.
+
+Here is an example from Mathlib that has a proof using `grind` and a lemmas that isn't tagged with a `grind` attribute:
+
+```lean
+@[simp]
+theorem isAdjMatrix_adjMatrix (α : Type*) {V : Type*}
+    (G : SimpleGraph V) [DecidableRel G.Adj] [Zero α]
+    [One α] : (G.adjMatrix α).IsAdjMatrix where
+  zero_or_one := by grind [SimpleGraph.adjMatrix_apply]
+```
+
+If you were trying to come up with this proof, you could for example do the following:
+
+```lean (name := sugg)
+@[simp]
+theorem isAdjMatrix_adjMatrix' (α : Type*) {V : Type*}
+    (G : SimpleGraph V) [DecidableRel G.Adj] [Zero α]
+    [One α] : (G.adjMatrix α).IsAdjMatrix where
+  zero_or_one := by grind? +suggestions
+```
+
+which outputs
+
+```leanOutput sugg
+Try these:
+  [apply] grind only [SimpleGraph.adjMatrix_apply, #8bc53232e5fd58f8]
+  [apply] grind only [SimpleGraph.adjMatrix_apply]
+  [apply] grind =>
+    instantiate only [SimpleGraph.adjMatrix_apply]
+    cases #8bc53232e5fd58f8
+```
+
+Then you can consider whether this lemma should possibly be tagged.
+
+In this case, the lemma {lean}`SimpleGraph.adjMatrix_apply` features a case distinction on the right side and should therefore not be tagged per the rule above.
 
 # Restricting e-matching in a `grind` call
 

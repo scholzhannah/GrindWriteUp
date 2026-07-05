@@ -26,8 +26,6 @@ set_option pp.rawOnError true
 
 #doc (Manual) "Understanding error messages" =>
 
-# Understanding error messages
-
 We now want to understand how to read the error messages of `grind`.
 This is the error message from before:
 
