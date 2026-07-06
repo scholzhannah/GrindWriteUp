@@ -127,7 +127,7 @@ Try these:
 
 that shows us the only possible case that we could split on here.
 
-Another tactic that we already saw is `finish`. This basically instructs `grind` to use all the tools at its disposal (you can imagine `grind` to do the same thing as `grind => finish`). In the proof at the beginning of this section we used `have` to provide a hint and then `finish` to tell `grind` to do the rest itself. We also briefly saw `finish?` at the beginning of this document. This provides you with a more detailed proof. Here is our example from above again:
+Another tactic that we already saw is `finish`. This basically instructs `grind` to use all the tools at its disposal (you can imagine `grind` to do the same thing as `grind => finish`). In the proof at the beginning of this section we used `have` to provide a hint and then `finish` to tell `grind` to do the rest itself. We also briefly saw `finish?` at the beginning of this document. This provides you with a more detailed proof. Here is an example:
 
 ```lean (name := finishquestion)
 lemma two_mul_ediv_two_of_even' {n : ℤ} :
@@ -135,6 +135,8 @@ lemma two_mul_ediv_two_of_even' {n : ℤ} :
   grind =>
     finish?
 ```
+
+which gives the output
 
 ```leanOutput finishquestion
 Try these:
