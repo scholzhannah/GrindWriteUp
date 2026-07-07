@@ -1,6 +1,5 @@
 import VersoManual
 import TextbookTemplate.Meta.Lean
-import TextbookTemplate.Papers
 
 -- for the second example
 import Mathlib.Data.Finset.Defs

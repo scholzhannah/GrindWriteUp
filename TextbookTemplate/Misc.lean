@@ -1,6 +1,5 @@
 import VersoManual
 import TextbookTemplate.Meta.Lean
-import TextbookTemplate.Papers
 
 -- for the first example
 import Mathlib.Algebra.Group.Int.Even

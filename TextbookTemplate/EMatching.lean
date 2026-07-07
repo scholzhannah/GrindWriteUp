@@ -1,6 +1,5 @@
 import VersoManual
 import TextbookTemplate.Meta.Lean
-import TextbookTemplate.Papers
 
 -- for a category theory example
 import Mathlib.CategoryTheory.Iso
