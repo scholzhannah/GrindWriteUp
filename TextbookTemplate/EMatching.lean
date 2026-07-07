@@ -38,7 +38,7 @@ This of course provides a lot of interactivity, so we will discuss this in detai
 
 The basic functionality of e-matching is the following: `grind` maintains an index of tagged lemmas and corresponding patterns. If a pattern matches the terms in the context, `grind` tries to apply the theorem to the relevant terms and write the result on the whiteboard.
 
-E-matching can be very powerful if whole libraries are tagged thoroughly but it can of course also be very slow, especially if patterns are chosen to be too general.
+E-matching can be very powerful if whole libraries are tagged thoroughly but it can of course also be very slow, especially if the chosen patterns are too general.
 This is why `grind` provides a lot of customisability and diagnostic tools here.
 
 # General
@@ -47,7 +47,7 @@ An expression is indexable if it starts with a constant that is anything but {le
 
 In addition to simply looking whether a single pattern can be found in the context, theorems can also have multi-patterns. Here multiple patterns need to be found in the context before the theorem is applied.
 
-Here is an example from Mathlib where a multi-pattern is used:
+Here is a theorem in Mathlib where a multi-pattern is used:
 
 ```lean
 theorem card_ne_zero_of_mem {α : Type*} {s : Finset α}
@@ -91,7 +91,7 @@ even_iff: [@Even `[ℤ] `[Int.instAdd] #0]
 
 `#0` refers to the first argument, so `n`.
 
-An equivalence is treated as an equality of proposition, so we can also use this modifier here. The pattern means that this theorem is used whenever there is a statement `Even n` on the whiteboard.
+An equivalence is treated as an equality of propositions, so we can also use this modifier here. The pattern means that this theorem is used whenever there is a statement `Even n` on the whiteboard.
 
 ## `=_`: right side of equality
 
@@ -393,7 +393,7 @@ When a `grind` call that you expect should work actually fails this could be due
 In this case you can either identify yourself which lemmas the proof should use and which ones of those are (insufficiently) tagged.
 Alternatively, you can use `grind +suggestions` which also considers lemmas for e-matching that have not been tagged.
 
-Here is an example from Mathlib that has a proof using `grind` and a lemmas that isn't tagged with a `grind` attribute:
+Here is an example from Mathlib that has a proof using `grind` and a lemma that isn't tagged with a `grind` attribute:
 
 ```lean
 @[simp]

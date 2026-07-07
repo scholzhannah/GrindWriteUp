@@ -64,9 +64,6 @@ Among others, it considers the following:
 * Inductive Types (e.g. if `some a = some b` then `a = b`)
 * Projections (e.g. if `(a₁, a₂) = (b₁, b₂)` then `a₁ = a₂`)
 
-Questions:
-* How do coercions work?
-
 ## Case Splits
 
 We already saw that `grind` can perform case splits.

@@ -75,7 +75,7 @@ register_grind_attr closedness
 ```
 
 
-but currently no usage examples since this a relatively new addition. A [subsequent PR by Floris van Doorn](https://github.com/leanprover-community/mathlib4/pull/39371) does however show what using this could look like:
+But there are currently no usage examples since this a relatively new addition. A [subsequent PR by Floris van Doorn](https://github.com/leanprover-community/mathlib4/pull/39371) does however show what using this could look like:
 
 ```lean
 attribute [compactness .] isCompact_Icc
@@ -148,5 +148,5 @@ theorem exists_subset_or_subset_of_two_mul_lt_card6
 
 Since `grind` is always a finishing tactic it should in general not be squeezed for the same reason that we don't squeeze terminal `simp`s.
 
-There is currently a bug in `grind` that makes it so that `grind?` sometimes doesn't return a working proof. This is an issue when trying to fix `grind` calls that break during Mathlib updates.
+There are bugs in `grind` that makes it so that `grind?` sometimes doesn't return a working proof. This is an issue when trying to fix `grind` calls that break during Mathlib updates.
 Mathlib tracks these cases in the [Weekly linting log](https://leanprover.zulipchat.com/#narrow/channel/287929-mathlib4/topic/Weekly.20linting.20log/) but currently doesn't refactor these `grind` calls. Instead Mathlib is waiting for a bug fix. (See [this PR](https://github.com/leanprover-community/mathlib4/pull/40023) for the discussion on this decision.)
