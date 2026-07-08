@@ -121,7 +121,7 @@ Try these:
 ```
 
 You can see that it displays the necessary lemma used here.
-We will learn what the `=` means later.
+We will learn what the "`=`" means later.
 
 Sometimes the output will be a little more confusing:
 

@@ -36,7 +36,7 @@ set_option pp.rawOnError true
 As said before, e-matching is how `grind` uses the lemmas tagged by users. In it's most basic form, you can tag a lemma with `@[grind *]` where `*` is a modifier, of which we discuss examples below.
 This of course provides a lot of interactivity, so we will discuss this in detail.
 
-The basic functionality of e-matching is the following: `grind` maintains an index of tagged lemmas and corresponding patterns. If a pattern matches the terms in the context, `grind` tries to apply the theorem to the relevant terms and write the result on the whiteboard.
+The basic functionality of e-matching is the following: `grind` maintains an index of tagged lemmas and corresponding patterns. If a pattern matches the terms in the context, `grind` tries to apply the theorem to the relevant terms and write the result on the whiteboard. We refer to this as "instantiating" this theorem.
 
 E-matching can be very powerful if whole libraries are tagged thoroughly but it can of course also be very slow, especially if the chosen patterns are too general.
 This is why `grind` provides a lot of customisability and diagnostic tools here.

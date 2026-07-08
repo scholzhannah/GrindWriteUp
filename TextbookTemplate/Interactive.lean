@@ -109,11 +109,12 @@ Another tactic that behaves slightly differently is `cases`. In interactive mode
 
 Here is an example:
 
-```lean (name := casequestion) +error
+```lean (name := casequestion)
 @[simp] lemma forall_mem_not_eq {α : Type*} {s : Finset α}
     {a : α} : (∀ b ∈ s, ¬ a = b) ↔ a ∉ s := by
   grind =>
     cases?
+    sorry
 ```
 
 which gives the output:

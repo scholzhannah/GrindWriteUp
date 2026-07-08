@@ -29,6 +29,8 @@ authors := ["Hannah Scholz"]
 {index}[overview]
 This is the write-up for the talk about the `grind` tactic for the Graduate Seminar "Advanced Topics in Formalised Mathematics" taught by Michael Rothgang in Bonn in the summer term 2026. This document is mostly based on the [Lean Language Reference](https://lean-lang.org/doc/reference/latest/The--grind--tactic/), so look there for further reading.
 
+`grind` is still a relatively new tactic. It was announced in July 2025 (see the Zulip announcement [here](https://leanprover.zulipchat.com/#narrow/channel/287929-mathlib4/topic/.60grind.60.20is.20available.2E.20What.20should.20Mathlib.20users.20expect.3F/with/527141724)) and is still in active development. So this document might already be out of date in the near future. It was written July 2026.
+
 {include 1 TextbookTemplate.Basic}
 
 # Intuition of how `grind` works
@@ -38,7 +40,7 @@ First `grind` writes all the hypotheses and the goal on the whiteboard.
 All proofs that `grind` produces are by contradiction, so it negates the goal and doesn't further distinguish it from the hypotheses.
 
 Afterwards, `grind` uses several different engines to find a proof, i.e. discover a contradiction.
-To ensure that these engines can work together, they all put discovered facts back on the whiteboard, so that another engines may use them.
+To ensure that these engines can work together, they all put discovered facts back on the whiteboard, so that another engine may use them.
 
 This document is supposed to be a short introduction on how to use `grind` in your projects. So we will only discuss parts that especially relevant to either a basic understanding of `grind` or to its usage.
 

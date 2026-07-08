@@ -99,8 +99,7 @@ example (n k : ℕ) (h1 : 2 * n = k) : k = 5 := by
   grind
 ```
 
-Of course this statement is clearly missing a hypothesis for it to be true.
-In a more complicated example you might not directly see the missing hypothesis but could maybe figure it out by looking at the error message:
+Of course this statement is clearly false but it shows us some different possible parts of the error message:
 
 ```leanOutput missingHyp
 `grind` failed
