@@ -4,10 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Floris van Doorn
 -/
 
-module
-
-public import Lean.Meta.Tactic.Grind.RegisterCommand
-public import Mathlib.Init
+import Lean.Meta.Tactic.Grind.RegisterCommand
+import Mathlib.Init
+import Std.Data.HashSet.Basic
 
 /-!
 # Custom grind-sets
