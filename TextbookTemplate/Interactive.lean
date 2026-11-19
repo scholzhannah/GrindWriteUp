@@ -60,12 +60,12 @@ which gives us the following output
 
 ```leanOutput question
 Try these:
-  [apply] grind only [usr card_union_add_card_inter, usr card_sdiff_add_card_inter]
+  [apply] grind only [usr card_union_add_card_inter, #74b4]
+  [apply] grind only [usr card_union_add_card_inter]
   [apply] grind =>
-    instantiate only [usr card_union_add_card_inter]
-    instantiate only [usr card_sdiff_add_card_inter]
-    instantiate only [usr card_union_add_card_inter]
-    ac
+    instantiate only [usr card_union_add_card_inter, #74b4]
+    instantiate only [#74b4]
+    lia
 ```
 
 So we can see that `grind` uses the lemmas `Finset.card_union_add_card_inter` and `Finset.card_union_add_card_inter`.

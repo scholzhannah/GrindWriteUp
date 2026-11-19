@@ -12,6 +12,8 @@ import Mathlib.Data.Bool.Count
 
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 
+import Lean.LibrarySuggestions.Default
+
 -- This gets access to most of the manual genre (which is also useful for textbooks)
 open Verso.Genre Manual
 
@@ -155,7 +157,7 @@ lemma EqOn.eq_of_mem {α β : Type*} {s : Set α}
 with the `grind?` output
 
 ```leanOutput question4
-eq_of_mem: [@Set.EqOn #7 #6 #4 #3 #5, @Membership.mem _ _ _ #5 #2]
+eq_of_mem: [@Set.EqOn #7 #6 #4 #3 #5, @Membership.mem _ (Set _) _ #5 #2]
 ```
 
 This time, the modifier produced a multi-pattern. You can see that this differs from the example above: multi-patterns are presented as lists with more than one entry, while multiple patterns are presented as different lists. So this theorem will only be used if `grind` finds both an expression `s.EqOn f₁ f₂` and `a ∈ s` on the whiteboard.
@@ -417,11 +419,11 @@ which outputs
 
 ```leanOutput sugg
 Try these:
-  [apply] grind only [SimpleGraph.adjMatrix_apply, #8bc53232e5fd58f8]
+  [apply] grind only [SimpleGraph.adjMatrix_apply, #8bc5]
   [apply] grind only [SimpleGraph.adjMatrix_apply]
   [apply] grind =>
     instantiate only [SimpleGraph.adjMatrix_apply]
-    cases #8bc53232e5fd58f8
+    cases #8bc5
 ```
 
 Then you can consider whether this lemma should possibly be tagged.

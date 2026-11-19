@@ -86,9 +86,11 @@ h : ∀ (a : Finset α), #a ≤ n ∨ ¬a ⊆ X ∧ ¬a ⊆ Y
 left : ¬X ∪ Y ⊆ X
 right : ¬X ∪ Y ⊆ Y
 w : α
-h_3 : ¬(w ∈ X ∪ Y → w ∈ X)
+left_1 : w ∈ X ∪ Y
+right_1 : w ∉ X
 w_1 : α
-h_5 : ¬(w_1 ∈ X ∪ Y → w_1 ∈ Y)
+left_2 : w_1 ∈ X ∪ Y
+right_2 : w_1 ∉ Y
 ⊢ False
 [grind] Goal diagnostics
   [facts] Asserted facts

@@ -19,9 +19,6 @@ import Mathlib.Topology.Order.OrderClosed
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
---cannot be in the same file
-import TextbookTemplate.AddAttr
-
 -- This gets access to most of the manual genre (which is also useful for textbooks)
 open Verso.Genre Manual
 
